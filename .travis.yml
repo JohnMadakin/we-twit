@@ -1,0 +1,11 @@
+language: "node_js"
+node_js:
+  - "node"
+services:
+  - postgresql
+after_install:
+  - npm run db:migrate
+before_script:
+  - psql -c 'create database ibudget_testDB;' -U postgres
+after_success:
+  - npm run coverage
