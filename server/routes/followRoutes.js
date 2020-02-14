@@ -6,12 +6,6 @@ const user = new UsersController(process.env.VERIFYEMAIL_URL);
 
 const router = Router();
 
-// /**
-//  * @description creates a new user
-//  * @param {string}
-//  * @param {function}
-//  */
-// router.post('', Validator.validateSignupData, auth.signup);
 
 /**
  * @description follow a user

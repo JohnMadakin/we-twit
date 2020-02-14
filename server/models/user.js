@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     lowercase: true,
+    index: true,
     validate: value => validator.isEmail(value),
   },
   username: {
@@ -17,6 +18,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     lowercase: true,
+    index: true,
   },
 
   name: String,

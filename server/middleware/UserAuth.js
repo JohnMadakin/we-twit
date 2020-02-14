@@ -1,14 +1,23 @@
 import errorhandler from '../helpers/errorHandler';
-import UserSevice from '../services/UserService';
+import UserService from '../services/UserService';
 import jwtHelper from '../helpers/jwtHelper';
 
 export default class UserAuth {
   static async validateEmailExists(req, res, next) {
     const { body: { email } } = req;
     const message = 'Username is incorrect';
-    const userFound = await UserSevice.findByEmail(email);
+    const userFound = await UserService.findByEmail(email);
     if (!userFound) {
       return errorhandler.sendErrorResponse({ message, statusCode: 422 }, res);
+    }
+    return next();
+  }
+
+  static async checkIfSuspended(req, res, next) {
+    const result = await UserService.findById(req.userId);
+    if (result._doc.suspended) {
+      const message = 'User Suspended';
+      return errorhandler.sendErrorResponse({ message, statusCode: 403 }, res);
     }
     return next();
   }
@@ -36,6 +45,7 @@ export default class UserAuth {
         return errorhandler.sendErrorResponse({ message, statusCode: 400 }, res);
       }
       req.userId = checkToken.user._id;
+      req.username = checkToken.user.username;
       return next();
     } catch (error) {
       message = 'Invalid Token';
@@ -47,7 +57,7 @@ export default class UserAuth {
     const { id } = req.params;
     let message = 'User not found';
 
-    const result = await UserSevice.findById(id);
+    const result = await UserService.findById(id);
     if (!result) {
       return errorhandler.sendErrorResponse({ message, statusCode: 404 }, res);
     }
@@ -65,7 +75,7 @@ export default class UserAuth {
   }
 
   static async checkIfFollowUserAlready(userId, id) {
-    const result = await UserSevice.findById(userId);
+    const result = await UserService.findById(userId);
     let shouldFollow = true;
     result._doc.following.map((user) => {
       if (user._id === id) {

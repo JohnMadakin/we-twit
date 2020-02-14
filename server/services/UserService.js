@@ -49,12 +49,23 @@ export default class UserService {
   }
 
   /**
- * @description update verified column of a user model
- * @param {integer} username
- * @param {boolean} verify
+ * @description update following field of a user model
+ * @param {object} _id
+ * @param {object} following
  * @return {array} user
  */
   static async updateFollowing(_id, following) {
     return UserModel.findByIdAndUpdate(_id, { $addToSet: { following } }, { new: true, upsert: true });
   }
+
+  /**
+* @description update followers field of a user model
+* @param {object} _id
+* @param {object} following
+* @return {array} user
+*/
+  static async updateFollowers(_id, followers) {
+    return UserModel.findByIdAndUpdate(_id, { $addToSet: { followers } }, { new: true, upsert: true });
+  }
+
 }

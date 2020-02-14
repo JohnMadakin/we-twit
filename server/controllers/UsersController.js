@@ -6,11 +6,11 @@ export default class UsersController extends BaseController {
   async followUser(req, res) {
     let message = '';
     try {
-      const { followingUser, userId } = req;
+      const { followingUser, userId , username } = req;
 
       const result = await UserService.updateFollowing(userId, followingUser);
       message = 'Follow User Success';
-
+      await UserService.updateFollowers(followingUser.id, { id: userId, username });
       return super.successResponse(res, message, 200, {
         following: result._doc.following,
       });

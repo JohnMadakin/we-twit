@@ -2,6 +2,22 @@ import validator from 'validator';
 import ErrorHandler from '../helpers/errorHandler';
 
 export default class Validators {
+  static validateTwits(req, res, next) {
+    if (req.body.twits && req.body.twits.length > process.env.MAX_CHARACTER) {
+      const message = 'max character exeeded';
+      const statusCode = 400;
+      return ErrorHandler.sendErrorResponse({ message, statusCode }, res);
+    }
+
+    if (req.body.reply && req.body.reply.length > process.env.MAX_CHARACTER) {
+      const message = 'max character exeeded';
+      const statusCode = 400;
+      return ErrorHandler.sendErrorResponse({ message, statusCode }, res);
+    }
+
+    return next();
+  }
+
   static validateSignupData(req, res, next) {
     const userData = req.body;
     const invalidData = [];
