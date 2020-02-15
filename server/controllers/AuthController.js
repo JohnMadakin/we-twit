@@ -46,13 +46,13 @@ export default class AuthController extends BaseController {
       return super.successResponse(res, message, 201, { token });
     } catch (err) {
       const statusCode = 422;
-      let message = '';
+      // let message = '';
 
       if (err.code === 11000) {
-        message = 'Email Address or username already Exists';
-        return errorhandler.sendErrorResponse({ message, statusCode }, res);
+        // message = 'Email Address or username already Exists';
+        return errorhandler.sendErrorResponse({ message: err.message, statusCode }, res);
       }
-      err.message = 'Some error occured';
+      // err.message = 'Some error occured';
       return next(err);
     }
   }
