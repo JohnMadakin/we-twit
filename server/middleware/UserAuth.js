@@ -5,7 +5,7 @@ import jwtHelper from '../helpers/jwtHelper';
 export default class UserAuth {
   static async validateEmailExists(req, res, next) {
     const { body: { email } } = req;
-    const message = 'Username is incorrect';
+    const message = 'Email or password is incorrect';
     const userFound = await UserService.findByEmail(email);
     if (!userFound) {
       return errorhandler.sendErrorResponse({ message, statusCode: 422 }, res);
