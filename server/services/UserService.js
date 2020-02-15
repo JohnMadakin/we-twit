@@ -68,4 +68,19 @@ export default class UserService {
     return UserModel.findByIdAndUpdate(_id, { $addToSet: { followers } }, { new: true, upsert: true });
   }
 
+  /**
+* @description search user
+* @param {string} search term
+* @param {boolean} verify
+* @return {array} user
+*/
+  static async search(searchTerm, limit, offset) {
+    const reg = new RegExp(`^${searchTerm}`, 'i');
+    return UserModel.find({ username: { $regex: reg } })
+      .skip(offset)
+      .limit(limit)
+      .sort({ updatedAt: 1 })
+      .select('username')
+      .exec();
+  }
 }

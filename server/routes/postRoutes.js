@@ -33,6 +33,6 @@ router.get('/timelines', UserAuthMiddleware.verifyUser, UserAuthMiddleware.check
  * @param {string}
  * @param {function}
  */
-router.get('/timelines', UserAuthMiddleware.verifyUser, UserAuthMiddleware.checkIfSuspended, twits.search);
+router.get('/search', twits.search);
 
 export default router;

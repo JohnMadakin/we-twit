@@ -6,10 +6,10 @@
   "scripts": {
     "start": "npm run build && npm run serve",
     "serve": "node ./dist/index.js",
-    "start:dev": "node_modules/nodemon/bin/nodemon.js --exec babel-node server/index.js",
+    "start:dev": "export NODE_ENV=development && node_modules/nodemon/bin/nodemon.js --exec babel-node server/index.js",
     "build": "rm -rf dist/ && babel ./server --out-dir dist/ --ignore ./node_modules",
     "linter": "./node_modules/eslint/bin/eslint.js './**/*.js'",
-    "test": "export NODE_ENV=test && npm run db:reset && npm run db:migrate && nyc --reporter=text --reporter=lcov mocha ./tests --require babel-polyfill --require babel-register --timeout=5000 --exit --recursive",
+    "test": "export NODE_ENV=test && nyc --reporter=text --reporter=lcov mocha ./tests --require babel-polyfill --require babel-register --timeout=5000 --exit --recursive",
     "coverage": "jest --collectCoverageFrom=server/**.js --coverage server"
   },
   "keywords": [],

@@ -14,9 +14,7 @@ export default class PostTwitController extends BaseController {
       return super.successResponse(res, message, 200, {
         ...result._doc,
       });
-
     } catch (e) {
-      console.log({e})
       message = 'Twit unsuccessful';
       return errorhandler.sendErrorResponse({ message, statusCode: 400 }, res);
     }
@@ -37,13 +35,12 @@ export default class PostTwitController extends BaseController {
       return super.successResponse(res, message, 200, {
         ...result._doc,
       });
-
     } catch (e) {
       message = 'Twit unsuccessful';
       return errorhandler.sendErrorResponse({ message, statusCode: 400 }, res);
     }
   }
-  
+
   async getTimelines(req, res) {
     let message = '';
     try {
@@ -54,7 +51,6 @@ export default class PostTwitController extends BaseController {
       const result = await PostService.findPostsByUser(req.userId, limit, offset);
       message = 'User Timelines';
       return super.successResponse(res, message, 200, result);
-
     } catch (e) {
       message = 'Twit unsuccessful';
       return errorhandler.sendErrorResponse({ message, statusCode: 400 }, res);
@@ -70,13 +66,11 @@ export default class PostTwitController extends BaseController {
       const { twits } = req.query;
 
       const result = await PostService.search(twits, limit, offset);
-      message = 'User Timelines';
+      message = 'Twits found';
       return super.successResponse(res, message, 200, result);
-
     } catch (e) {
-      message = 'Twit unsuccessful';
+      message = 'Twit search unsuccessful';
       return errorhandler.sendErrorResponse({ message, statusCode: 400 }, res);
     }
   }
-
 }

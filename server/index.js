@@ -1,11 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+// import dotenv from 'dotenv';
 import routes from './routes';
-import startDatabaseConnection from './config/connect';
+import database from './config/connect';
 
 const port = process.env.PORT || 3009;
 
+database.connect();
 // Create global app object
 const app = express();
 

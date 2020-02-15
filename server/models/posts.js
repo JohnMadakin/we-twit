@@ -14,10 +14,10 @@ const postSchema = new mongoose.Schema({
     index: true,
   },
   attachments: String,
-  retweets: Array,
+  replies: Array,
   meta: {
     likes: Array,
-    replies: Array,
+    retweets: Array,
   },
 });
 

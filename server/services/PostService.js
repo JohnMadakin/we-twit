@@ -2,7 +2,7 @@ import models from '../models';
 
 const { PostModel } = models;
 
-export default class UserService {
+export default class PostService {
   /**
    * @description create a new post
    * @param {object} userObject - {
@@ -27,19 +27,35 @@ export default class UserService {
    * @return {array} Post
    */
   static async updateTwitWithReply(_id, reply) {
-    return PostModel.findOneAndUpdate({ _id }, { $addToSet: { replies: reply } }, { new: true, upsert: true });
+    return PostModel.findOneAndUpdate({ _id }, { $push: { replies: reply } }, { new: true, upsert: true });
   }
 
   /**
  * @description get user timelines
- * @param {integer} username
- * @param {boolean} verify
- * @return {array} user
+ * @param {ObjectId} userId
+ * @param {integer} limit
+ * @param {integer} offset
+ * @return {array} posts
  */
   static async findPostsByUser(userId, limit, offset) {
     return PostModel.find({
       $or: [{ userId }, { 'replies.userId': userId }],
     })
+      .skip(offset)
+      .limit(limit)
+      .sort({ updatedAt: 1 })
+      .exec();
+  }
+
+  /**
+* @description search twits
+* @param {string} search term
+ * @param {integer} limit
+ * @param {integer} offset
+ * @return {array} twits
+ */
+  static async search(searchTerm, limit, offset) {
+    return PostModel.find({ $text: { $search: searchTerm } })
       .skip(offset)
       .limit(limit)
       .sort({ updatedAt: 1 })

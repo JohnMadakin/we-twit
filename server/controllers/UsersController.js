@@ -20,4 +20,25 @@ export default class UsersController extends BaseController {
       return errorhandler.sendErrorResponse({ message, statusCode: 400 }, res);
     }
   }
+
+  async search(req, res) {
+    let message = 'users found';
+    try {
+      const page = req.query.page || 1;
+      const limit = 50;
+      const offset = (page - 1) * limit;
+      const { username } = req.query;
+      let code = 200;
+      const result = await UserService.search(username, limit, offset);
+      if (!result.length) {
+        code = 400;
+        message = 'no users found';
+      }
+
+      return super.successResponse(res, message, code, result);
+    } catch (e) {
+      message = 'user search unsuccessful';
+      return errorhandler.sendErrorResponse({ message, statusCode: 400 }, res);
+    }
+  }
 }

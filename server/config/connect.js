@@ -4,22 +4,37 @@ const mongoose = require('mongoose');
 
 dotenv.config();
 class Database {
-  constructor(server, database) {
-    this.server = server || process.env.MONGODB_URL;
-    this.database = database || process.env.DATABASE;
-    this.connect();
+  static getServer() {
+    if (process.env.NODE_ENV === 'development') {
+      return process.env.STAGING_URL;
+    }
+    if (process.env.NODE_ENV === 'production') {
+      return process.env.PRODUCTION_URL;
+    }
+    return process.env.TEST_URL;
   }
 
-  connect() {
-    const connectiionString = `mongodb://${this.server}/${this.database}`;
-    mongoose.connect(connectiionString, {
+  static getDB() {
+    if (process.env.NODE_ENV === 'development') {
+      return process.env.STAGING_DATABASE;
+    }
+    if (process.env.NODE_ENV === 'production') {
+      return process.env.PRODUCTION_DATABASE;
+    }
+    return process.env.TEST_DATABASE;
+  }
+
+
+   connect() {
+    const connectionString = `mongodb://${Database.getServer()}/${Database.getDB()}`;
+    mongoose.connect(connectionString, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
       useFindAndModify: false,
     })
-      .then(() => {
-        console.log('Database connection successful');
+      .then((conn) => {
+          console.log('Database connection successful');
       })
       .catch((err) => {
         console.error('Database connection error');
