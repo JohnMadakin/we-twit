@@ -22,11 +22,15 @@ app.use(express.urlencoded({
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.status(200).send('Welcome to we-twits');
+});
+
 
 app.use(routes);
 
 // / catch 404 and forward to error handler
-app.use((req, res, next) => {
+app.use('*', (req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);

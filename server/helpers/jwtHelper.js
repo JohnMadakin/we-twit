@@ -24,10 +24,10 @@ class JWTHelper {
    * @returns {Object} userObject
    */
   static verifyToken(userToken) {
-    if (!userToken || typeof userToken !== 'string') {
-      return false;
-    }
     try {
+      if (!userToken || typeof userToken !== 'string') {
+        return false;
+      }
       const decodedToken = jsonWebToken.verify(userToken, config.jwtSecret);
       return decodedToken;
     } catch (err) {
