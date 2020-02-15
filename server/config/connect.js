@@ -26,7 +26,7 @@ class Database {
 
 
    connect() {
-    const connectionString = `mongodb://${Database.getServer()}/${Database.getDB()}`;
+     const connectionString = `${Database.getServer()}/${Database.getDB()}?retryWrites=true&w=majority`;
     mongoose.connect(connectionString, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
